@@ -5,7 +5,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-//	"strings"
+	"strings"
 )
 
 func check(e error) {
@@ -41,9 +41,16 @@ func main() {
 	for scanner.Scan() {
 		//lines = append(lines, scanner.Text())
 		row = scanner.Text()
-		if len(row) > 16 {
+                n:= strings.Index(row, "\t")
+                if n == -1{
+		 n = strings.Index(row, ";")
+		}
+                if n == -1 {
+			n=len(row)-1
+		}
 
-			rez = row[0:16]
+		if len(row) > n {
+			rez = row[0:n]
 			//Увеличим на 1 значение элемента набора для ключа равного row[0:16]  
                         //( если таковой отсутствует будет дабавлен новый элемент в набор c значением равным 1
 			counts[rez]++ 
@@ -54,10 +61,10 @@ func main() {
 
 
 	}
-	fmt.Println("Выявлены дубликаты ШПИ:")
+	fmt.Println("Выявлены дубликаты:")
 	for line, n := range counts {
 		if n > 1 {
-			fmt.Printf("%d\t%s\n", n, line)
+			fmt.Printf("%s\t%d\n",line,n)
 		}
                         fw.WriteString(line + "\n")
 			//fmt.Println(line)
